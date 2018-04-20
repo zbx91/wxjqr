@@ -163,7 +163,7 @@ def GenEcdhKey():
     global EcdhPriKey, EcdhPubKey
     # 载入c模块
     loader = ctypes.cdll.LoadLibrary
-    lib = loader("/usr/src/wxjqr/microchat/dll/libecdh_x64.so")
+    lib = loader("./microchat/dll/libecdh_x64.so")
     '''
     if platform.architecture()[0] == '64bit':
         lib = loader("./microchat/dll/ecdh_x64.dll")
@@ -195,7 +195,7 @@ def DoEcdh(serverEcdhPubKey):
     EcdhShareKey = b''
     # 载入c模块
     loader = ctypes.cdll.LoadLibrary
-    lib = loader("/usr/src/wxjqr/microchat/dll/libecdh_x64.so")
+    lib = loader("./microchat/dll/libecdh_x64.so")
     '''
     if platform.architecture()[0] == '64bit':
         lib = loader("./microchat/dll/ecdh_x64.dll")

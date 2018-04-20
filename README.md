@@ -32,3 +32,14 @@ Windows环境
 
 > 退出
 >> (robot) [root@iz2ze2vve1jzbburujx43pz robot]>deactivate
+
+cp /usr/src/wxjqr/wxjqr.service /usr/lib/systemd/system/wxjqr.service
+
+chmod 754 /usr/lib/systemd/system/wxjqr.service
+
+systemctl enable wxjqr.service
+systemctl disable wxjqr.service
+systemctl status wxjqr.service
+
+systemctl start wxjqr.service
+systemctl stop wxjqr.service

@@ -1,0 +1,15 @@
+[Unit]
+Description=wxjqr
+After=network.target
+  
+[Service]
+Type=forking
+User=root
+Group=root
+PIDFile=/usr/src/wxjqr/wxjqr.pid
+ExecStart=/usr/src/wxjqr/startup.sh
+ExecReload=
+ExecStop=/usr/src/wxjqr/shutdown.sh
+  
+[Install]
+WantedBy=multi-user.target

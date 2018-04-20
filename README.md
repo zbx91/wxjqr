@@ -40,6 +40,7 @@ chmod 754 /usr/lib/systemd/system/wxjqr.service
 systemctl enable wxjqr.service
 systemctl disable wxjqr.service
 systemctl status wxjqr.service
+systemctl list-units --type=service
 
 systemctl start wxjqr.service
 systemctl stop wxjqr.service

@@ -1,5 +1,5 @@
 #!/bin/bash
-P_ID=`ps -ef | grep run.py | grep -v grep | awk '{print $2}'`
+P_ID=`ps -ef | grep /usr/src/wxjqr/run.py | grep -v grep | awk '{print $2}'`
 
 if [ "$P_ID" == "" ]; then
 	echo "=== wxjqr not exists or stop success"

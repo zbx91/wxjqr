@@ -1,4 +1,2 @@
 #!/bin/bash
-cd /usr/src/wxjqr
-source bin/activate
-python3 run.py
+python3 /usr/src/wxjqr/run.py &

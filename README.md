@@ -28,7 +28,7 @@ Windows环境
 >> (robot) [root@iz2ze2vve1jzbburujx43pz robot]>pip3 install -r requirements.txt
 
 > 修改run.py相应的usrname & passwd，执行
->> (robot) [root@iz2ze2vve1jzbburujx43pz robot]>python run.py
+>> (robot) [root@iz2ze2vve1jzbburujx43pz robot]>python3 run.py
 
 > 退出
 >> (robot) [root@iz2ze2vve1jzbburujx43pz robot]>deactivate

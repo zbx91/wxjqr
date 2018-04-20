@@ -1,14 +1,14 @@
 [Unit]
 Description=wxjqr
 After=network.target
-
+Wants=network.target
 [Service]
 Type=simple
 User=root
 Group=root
 WorkingDirectory=/usr/src/wxjqr
 ExecStart=/usr/local/bin/python3 run.py
+ExecStop=/usr/src/wxjqr/shutdown.sh
 Restart=always
-
 [Install]
 WantedBy=multi-user.target

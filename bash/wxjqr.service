@@ -12,6 +12,6 @@ ExecStart=/usr/local/bin/python3 run.py
 ExecReload=/usr/src/wxjqr/restart.sh
 ExecStop=/usr/src/wxjqr/shutdown.sh
 Restart=always
-RestartSec=20s
+RestartSec=46s
 [Install]
 WantedBy=multi-user.target

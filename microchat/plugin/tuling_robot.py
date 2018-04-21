@@ -37,6 +37,7 @@ def tuling_robot(msg):
             if Util.wxid in at_user_list:                                                               # 群聊中有@我的消息
                 # 群聊消息以'sender_wxid:\n'起始
                 send_to_tuling_content = msg.raw.content[msg.raw.content.find('\n') + 1:]
+                #print('aa',send_to_tuling_content)
                 # 解析@我的人的昵称
                 reply_nick_name = Util.find_str(msg.xmlContent, '<pushcontent content="', '在群聊中@了你" nickname="')
                 if reply_nick_name:
@@ -48,6 +49,7 @@ def tuling_robot(msg):
                 send_to_tuling_content = msg.raw.content[msg.raw.content.rfind('\u2005') + 1:]           # at格式: @nick_name\u2005
 
                 # 处理郑州路况信息
+                #print('bb',send_to_tuling_content)
                 reply_text = send_to_tuling_content
                 if (send_to_tuling_content.find('郑州') > -1 and send_to_tuling_content.find('路况') > -1):
                     lkxx = zzlk()
@@ -80,6 +82,7 @@ def tuling_robot(msg):
                     interface.new_send_msg(msg.from_id.id, reply_text.encode(encoding="utf-8"), [reply_at_wxid])
                     return
 
+            send_to_tuling_content = cont
             '''
             print("------------bb----------")
             print(msg)
@@ -89,7 +92,7 @@ def tuling_robot(msg):
             print("------------bb----------")
             '''
             #interface.new_send_msg(msg.from_id.id, reply_text.encode(encoding="utf-8"), [reply_at_wxid])
-            return
+            #return
     # 公众号消息不回复
     elif msg.from_id.id.startswith('gh_'):  
         return

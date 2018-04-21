@@ -10,7 +10,8 @@ from .logger_wrapper import logger
 TULING_HOST = 'openapi.tuling123.com'
 TULING_API = 'http://openapi.tuling123.com/openapi/api/v2'
 # 图灵机器人key
-TULING_KEY = '460a124248234351b2095b57b88cffd2'
+#TULING_KEY = '460a124248234351b2095b57b88cffd2'
+TULING_KEY = 'a3ca8ebaeae74c1eb282784758e8a9a2'
 
 # 郑州路况
 def zzlk():
@@ -45,6 +46,18 @@ def tuling_robot(msg):
                 reply_at_wxid = msg.raw.content[:msg.raw.content.find(':\n')]
                 # 取@我之后的消息内容
                 send_to_tuling_content = msg.raw.content[msg.raw.content.rfind('\u2005') + 1:]           # at格式: @nick_name\u2005
+
+                # 处理郑州路况信息
+                reply_text = send_to_tuling_content
+                if (send_to_tuling_content.find('郑州') > -1 and send_to_tuling_content.find('路况') > -1):
+                    lkxx = zzlk()
+                    if lkxx:
+                        reply_text = lkxx
+                        pat = re.compile(r'\n+')
+                        reply_text = pat.sub('\n\n', reply_text)
+                        #print(reply_text)
+                        interface.new_send_msg(msg.from_id.id, reply_text.encode(encoding="utf-8"), [reply_at_wxid])
+                        return
         except:
             cont = msg.raw.content[msg.raw.content.find(':\n') + 2:].strip()
             reply_at_wxid = msg.raw.content[:msg.raw.content.find(':\n')]
@@ -55,6 +68,7 @@ def tuling_robot(msg):
             #else:
                 #reply_text = cont
 
+            # 处理郑州路况信息
             reply_text = cont
             if (cont.find('郑州') > -1 and cont.find('路况') > -1):
                 lkxx = zzlk()
@@ -63,6 +77,8 @@ def tuling_robot(msg):
                     pat = re.compile(r'\n+')
                     reply_text = pat.sub('\n\n', reply_text)
                     #print(reply_text)
+                    interface.new_send_msg(msg.from_id.id, reply_text.encode(encoding="utf-8"), [reply_at_wxid])
+                    return
 
             '''
             print("------------bb----------")
@@ -72,7 +88,7 @@ def tuling_robot(msg):
             print(reply_at_wxid)
             print("------------bb----------")
             '''
-            interface.new_send_msg(msg.from_id.id, reply_text.encode(encoding="utf-8"), [reply_at_wxid])
+            #interface.new_send_msg(msg.from_id.id, reply_text.encode(encoding="utf-8"), [reply_at_wxid])
             return
     # 公众号消息不回复
     elif msg.from_id.id.startswith('gh_'):  

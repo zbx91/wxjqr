@@ -41,6 +41,8 @@ systemctl enable wxjqr.service
 systemctl disable wxjqr.service
 systemctl status wxjqr.service
 systemctl list-units --type=service
+systemctl daemon-reload
 
 systemctl start wxjqr.service
 systemctl stop wxjqr.service
+systemctl reload wxjqr.service

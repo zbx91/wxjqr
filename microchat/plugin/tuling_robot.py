@@ -1,4 +1,4 @@
-import json, re
+import json, re, requests
 from .. import define
 from .. import interface
 from .. import mm_pb2
@@ -11,6 +11,15 @@ TULING_HOST = 'openapi.tuling123.com'
 TULING_API = 'http://openapi.tuling123.com/openapi/api/v2'
 # 图灵机器人key
 TULING_KEY = '460a124248234351b2095b57b88cffd2'
+
+# 郑州路况
+def zzlk():
+    try:
+        r = requests.get("http://aychat.ishaking.com/zz_road/public/get_body_info_city")
+        arr = json.loads(r.text)
+        return arr['time'].strip() + '\n\n' + arr['info'].strip()
+    except:
+        return ''
 
 # 图灵机器人
 def tuling_robot(msg):
@@ -38,14 +47,23 @@ def tuling_robot(msg):
                 send_to_tuling_content = msg.raw.content[msg.raw.content.rfind('\u2005') + 1:]           # at格式: @nick_name\u2005
         except:
             cont = msg.raw.content[msg.raw.content.find(':\n') + 2:].strip()
-            m = re.search('<pushcontent content="(.*?):.*?" nickname=".*?" />', msg.xmlContent)
-            if m:
-                reply_text = cont
-                #reply_text = '@{}'.format(m.group(1)) + ' ' + cont
-            else:
-                reply_text = cont
-
             reply_at_wxid = msg.raw.content[:msg.raw.content.find(':\n')]
+            #m = re.search('<pushcontent content="(.*?):.*?" nickname=".*?" />', msg.xmlContent)
+            #if m:
+                #reply_text = cont
+                #reply_text = '@{}'.format(m.group(1)) + ' ' + cont
+            #else:
+                #reply_text = cont
+
+            reply_text = cont
+            if (cont.find('郑州') > -1 and cont.find('路况') > -1):
+                lkxx = zzlk()
+                if lkxx:
+                    reply_text = lkxx
+                    pat = re.compile(r'\n+')
+                    reply_text = pat.sub('\n\n', reply_text)
+                    #print(reply_text)
+
             '''
             print("------------bb----------")
             print(msg)

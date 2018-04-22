@@ -14,13 +14,21 @@ TULING_API = 'http://openapi.tuling123.com/openapi/api/v2'
 TULING_KEY = 'a3ca8ebaeae74c1eb282784758e8a9a2'
 
 # 郑州路况
-def zzlk():
+def zzlk(cont, recvid, reply_at_wxid):
+    if not(cont.find('郑州') > -1 and cont.find('路况') > -1):
+        return False
+    
     try:
         r = Util.get('aychat.ishaking.com', 'http://aychat.ishaking.com/zz_road/public/get_body_info_city')
         arr = json.loads(r)
-        return arr['time'].strip() + '\n\n' + arr['info'].strip()
+        cont = arr['time'].strip() + '\n\n' + arr['info'].strip()
+
+        pat = re.compile(r'\n+')
+        reply_text = pat.sub('\n\n', cont)
+        interface.new_send_msg(recvid, reply_text.encode(encoding="utf-8"), [reply_at_wxid])
+        return True
     except:
-        return ''
+        return False
 
 # 图灵机器人
 def tuling_robot(msg):
@@ -47,9 +55,16 @@ def tuling_robot(msg):
                 reply_at_wxid = msg.raw.content[:msg.raw.content.find(':\n')]
                 # 取@我之后的消息内容
                 send_to_tuling_content = msg.raw.content[msg.raw.content.rfind('\u2005') + 1:]           # at格式: @nick_name\u2005
+                '''
+                print('----------dd-----------')
+                print(send_to_tuling_content)
+                print('----------dd-----------')
+                '''
 
                 # 处理郑州路况信息
-                #print('bb',send_to_tuling_content)
+                if zzlk(send_to_tuling_content, msg.from_id.id, reply_at_wxid):
+                    return
+                '''
                 reply_text = send_to_tuling_content
                 if (send_to_tuling_content.find('郑州') > -1 and send_to_tuling_content.find('路况') > -1):
                     lkxx = zzlk()
@@ -57,11 +72,11 @@ def tuling_robot(msg):
                         reply_text = lkxx
                         pat = re.compile(r'\n+')
                         reply_text = pat.sub('\n\n', reply_text)
-                        #print(reply_text)
                         interface.new_send_msg(msg.from_id.id, reply_text.encode(encoding="utf-8"), [reply_at_wxid])
                         return
+                '''
         except:
-            cont = msg.raw.content[msg.raw.content.find(':\n') + 2:].strip()
+            cont = msg.raw.content[msg.raw.content.find('\n') + 1:]
             reply_at_wxid = msg.raw.content[:msg.raw.content.find(':\n')]
             #m = re.search('<pushcontent content="(.*?):.*?" nickname=".*?" />', msg.xmlContent)
             #if m:
@@ -70,7 +85,11 @@ def tuling_robot(msg):
             #else:
                 #reply_text = cont
 
+            #print(cont, msg.from_id.id, reply_at_wxid)
             # 处理郑州路况信息
+            if zzlk(cont, msg.from_id.id, reply_at_wxid):
+                return
+            '''
             reply_text = cont
             if (cont.find('郑州') > -1 and cont.find('路况') > -1):
                 lkxx = zzlk()
@@ -81,15 +100,16 @@ def tuling_robot(msg):
                     #print(reply_text)
                     interface.new_send_msg(msg.from_id.id, reply_text.encode(encoding="utf-8"), [reply_at_wxid])
                     return
-
-            send_to_tuling_content = cont
             '''
-            print("------------bb----------")
+
+            send_to_tuling_content = msg.raw.content[msg.raw.content.rfind('\u2005') + 1:]
+            '''
+            print("------------cc----------")
             print(msg)
             print(msg.from_id.id)
             print(reply_prefix)
             print(reply_at_wxid)
-            print("------------bb----------")
+            print("------------cc----------")
             '''
             #interface.new_send_msg(msg.from_id.id, reply_text.encode(encoding="utf-8"), [reply_at_wxid])
             #return
@@ -97,7 +117,24 @@ def tuling_robot(msg):
     elif msg.from_id.id.startswith('gh_'):  
         return
     else:
-        pass
+        cont = msg.raw.content.strip()
+        reply_at_wxid = msg.from_id.id
+        
+        # 处理郑州路况信息
+        if zzlk(cont, msg.from_id.id, reply_at_wxid):
+            return
+
+        send_to_tuling_content = cont
+        '''
+        print("------------cc----------")
+        print(msg)
+        print(msg.from_id.id)
+        print(reply_prefix)
+        print(reply_at_wxid)
+        print("------------cc----------")
+        '''
+        #pass
+        #return
 
     # 使用图灵接口获取自动回复信息
     data = {
@@ -122,9 +159,13 @@ def tuling_robot(msg):
         if reply_prefix and reply_at_wxid:
             # 消息前缀: @somebody  并at发消息人
             #interface.new_send_msg(msg.from_id.id, (reply_prefix + ' ' + robot_ret['results'][0]['values']['text']).encode(encoding="utf-8"), [reply_at_wxid])
+            #print('---------------aa---------------')
             interface.new_send_msg(msg.from_id.id, robot_ret['results'][0]['values']['text'].encode(encoding="utf-8"), [reply_at_wxid])
+            #print('---------------aa---------------')
         else:
+            #print('---------------bb---------------')
             interface.new_send_msg(msg.from_id.id, robot_ret['results'][0]['values']['text'].encode(encoding="utf-8"))
+            #print('---------------bb---------------')
     except:
         logger.info('tuling api 调用异常!', 1)
     return

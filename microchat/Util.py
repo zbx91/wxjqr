@@ -385,3 +385,18 @@ def get_client_msg_id(svrid):
     except:
         pass
     return ''
+
+# HTTP发get请求
+def get(host, api, data=None, head=''):
+    try:
+        conn = http.client.HTTPConnection(host, timeout=2)
+        if head:
+            conn.request("GET", api, data, head)
+        else:
+            conn.request("GET", api, data)
+        response = conn.getresponse().read()
+        conn.close()
+        return response
+    except:
+        logger.info('{}请求失败!'.format(api) ,11)
+        return b''

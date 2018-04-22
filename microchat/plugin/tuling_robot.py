@@ -1,4 +1,4 @@
-import json, re, requests
+import json, re
 from .. import define
 from .. import interface
 from .. import mm_pb2
@@ -16,8 +16,8 @@ TULING_KEY = 'a3ca8ebaeae74c1eb282784758e8a9a2'
 # 郑州路况
 def zzlk():
     try:
-        r = requests.get("http://aychat.ishaking.com/zz_road/public/get_body_info_city")
-        arr = json.loads(r.text)
+        r = Util.get('aychat.ishaking.com', 'http://aychat.ishaking.com/zz_road/public/get_body_info_city')
+        arr = json.loads(r)
         return arr['time'].strip() + '\n\n' + arr['info'].strip()
     except:
         return ''

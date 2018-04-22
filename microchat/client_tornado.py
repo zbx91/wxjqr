@@ -65,7 +65,7 @@ class ChatClient(object):
 
     @gen.coroutine
     def start(self):
-        self.stream = yield TCPClient().connect(self.host, self.port)
+        self.stream = yield TCPClient().connect(self.host, self.port, timeout=5)
         self.send_heart_beat()
         self.heartbeat_callback = PeriodicCallback(self.send_heart_beat, 1000 * HEARTBEAT_TIMEOUT)
         self.heartbeat_callback.start()                 # start scheduler

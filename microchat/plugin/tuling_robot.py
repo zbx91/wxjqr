@@ -60,21 +60,9 @@ def tuling_robot(msg):
                 print(send_to_tuling_content)
                 print('----------dd-----------')
                 '''
-
                 # 处理郑州路况信息
                 if zzlk(send_to_tuling_content, msg.from_id.id, reply_at_wxid):
                     return
-                '''
-                reply_text = send_to_tuling_content
-                if (send_to_tuling_content.find('郑州') > -1 and send_to_tuling_content.find('路况') > -1):
-                    lkxx = zzlk()
-                    if lkxx:
-                        reply_text = lkxx
-                        pat = re.compile(r'\n+')
-                        reply_text = pat.sub('\n\n', reply_text)
-                        interface.new_send_msg(msg.from_id.id, reply_text.encode(encoding="utf-8"), [reply_at_wxid])
-                        return
-                '''
         except:
             cont = msg.raw.content[msg.raw.content.find('\n') + 1:]
             reply_at_wxid = msg.raw.content[:msg.raw.content.find(':\n')]
@@ -89,18 +77,6 @@ def tuling_robot(msg):
             # 处理郑州路况信息
             if zzlk(cont, msg.from_id.id, reply_at_wxid):
                 return
-            '''
-            reply_text = cont
-            if (cont.find('郑州') > -1 and cont.find('路况') > -1):
-                lkxx = zzlk()
-                if lkxx:
-                    reply_text = lkxx
-                    pat = re.compile(r'\n+')
-                    reply_text = pat.sub('\n\n', reply_text)
-                    #print(reply_text)
-                    interface.new_send_msg(msg.from_id.id, reply_text.encode(encoding="utf-8"), [reply_at_wxid])
-                    return
-            '''
 
             send_to_tuling_content = msg.raw.content[msg.raw.content.rfind('\u2005') + 1:]
             '''

@@ -289,7 +289,7 @@ def new_init_buf2resp(buf):
             else:
                 # 将消息存入数据库
                 Util.insert_msg_to_db(msg.serverid, msg.createTime, msg.from_id.id, msg.to_id.id, msg.type, msg.raw.content)
-                logger.info('收到新消息:\ncreate utc time:{}\ntype:{}\nfrom:{}\nto:{}\nraw data:{}\nxml data:{}'.format(Util.utc_to_local_time(msg.createTime), msg.type, msg.from_id.id, msg.to_id.id, msg.raw.content, msg.xmlContent))
+                #logger.info('收到新消息:\ncreate utc time:{}\ntype:{}\nfrom:{}\nto:{}\nraw data:{}\nxml data:{}'.format(Util.utc_to_local_time(msg.createTime), msg.type, msg.from_id.id, msg.to_id.id, msg.raw.content, msg.xmlContent))
         elif 2 == res.tag7[i].type:                                                                     # 好友列表
             friend = mm_pb2.contact_info()
             friend.ParseFromString(res.tag7[i].data.data)
@@ -335,7 +335,7 @@ def new_sync_buf2resp(buf):
             else:
                 # 将消息存入数据库
                 Util.insert_msg_to_db(msg.serverid, msg.createTime, msg.from_id.id, msg.to_id.id, msg.type, msg.raw.content)
-                logger.info('收到新消息:\ncreate utc time:{}\ntype:{}\nfrom:{}\nto:{}\nraw data:{}\nxml data:{}'.format(Util.utc_to_local_time(msg.createTime), msg.type, msg.from_id.id, msg.to_id.id, msg.raw.content, msg.xmlContent))
+                #logger.info('收到新消息:\ncreate utc time:{}\ntype:{}\nfrom:{}\nto:{}\nraw data:{}\nxml data:{}'.format(Util.utc_to_local_time(msg.createTime), msg.type, msg.from_id.id, msg.to_id.id, msg.raw.content, msg.xmlContent))
                 # 接入插件
                 plugin.dispatch(msg)   
         elif 2 == res.msg.tag2[i].type:                                                                     # 更新好友消息
